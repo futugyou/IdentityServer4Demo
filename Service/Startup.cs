@@ -13,6 +13,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 
 using System.Reflection;
+using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
+
 namespace Service
 {
     public class Startup
@@ -29,7 +33,18 @@ namespace Service
         {
             var connectionString = Configuration["ConnectionString"];
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1"
+                });
+                //Set the comments path for the swagger json and ui.
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var xmlPath = Path.Combine(basePath, "Service.xml");
+                c.IncludeXmlComments(xmlPath);
+                //  c.OperationFilter<HttpHeaderOperation>(); // 添加httpHeader参数
+            });
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(Config.GetUsers())
@@ -65,6 +80,12 @@ namespace Service
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             InitializeDatabase.InitAsync(app);
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TwBusManagement API V1");
+            });
+
             loggerFactory.AddApplicationInsights(app.ApplicationServices, LogLevel.Trace);
             if (env.IsDevelopment())
             {
