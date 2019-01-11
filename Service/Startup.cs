@@ -45,6 +45,7 @@ namespace Service
                 c.IncludeXmlComments(xmlPath);
                 //  c.OperationFilter<HttpHeaderOperation>(); // 添加httpHeader参数
             });
+
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(Config.GetUsers())
@@ -74,6 +75,13 @@ namespace Service
                 });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "api1";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,10 +102,12 @@ namespace Service
             else
             {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+               // app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseMvc();
         }
     }
