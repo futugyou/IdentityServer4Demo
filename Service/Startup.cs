@@ -105,10 +105,11 @@ namespace Service
                // app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
+            //app.UseHttpsRedirection();
+            //app.UseAuthentication();
             app.UseIdentityServer();
-            app.UseMvc();
+            //app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

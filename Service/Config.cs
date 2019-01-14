@@ -21,7 +21,9 @@ namespace Service
                     SubjectId = "1",
                     Username = "alice",
                     Password = "password",
-                    Claims = new List<Claim>(){new Claim(JwtClaimTypes.Role,"superadmin") }
+                    Claims = new List<Claim>(){
+                        new Claim(JwtClaimTypes.Role,"superadmin")
+                    }
                 },
                 new TestUser
                 {
@@ -31,7 +33,8 @@ namespace Service
                     Claims = new List<Claim>
                     {
                         new Claim("name", "Bob"),
-                        new Claim("website", "https://bob.com")
+                        new Claim("website", "https://bob.com"),
+                        new Claim(JwtClaimTypes.Role, "admin"),
                     },
                 }
             };
@@ -43,6 +46,7 @@ namespace Service
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource("roles","role",new List<string>{ "role"}),
             };
         }
 
@@ -102,7 +106,7 @@ namespace Service
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "roles"
                     },
                     AllowOfflineAccess = true
                 },
