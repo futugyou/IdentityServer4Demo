@@ -66,8 +66,11 @@ namespace MvcClient
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");//must be scope in identity server
-                options.Scope.Add("roles");
+                options.Scope.Add("roles"); 
+                options.Scope.Add("api1");
+                options.Scope.Add("offline_access");
                 options.ClaimActions.MapUniqueJsonKey("role", "role");//把role claim 映射到User.Claims里
+                options.ClaimActions.MapJsonKey("website", "website");
                 // role claim映射成ASP.NET Core MVC可以识别的角色Roles。
                 options.TokenValidationParameters = new TokenValidationParameters
                 {

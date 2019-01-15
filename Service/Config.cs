@@ -106,7 +106,8 @@ namespace Service
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "roles"
+                        "roles",
+                        "api1"
                     },
                     AllowOfflineAccess = true
                 },
