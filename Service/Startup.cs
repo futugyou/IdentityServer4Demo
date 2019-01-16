@@ -130,6 +130,8 @@ namespace Service
 
             //app.UseHttpsRedirection();
             //app.UseAuthentication();
+
+            app.UseStaticFiles();
             app.UseIdentityServer();
             //app.UseMvc();
             app.UseMvcWithDefaultRoute();

@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityModel;
+﻿using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using static IdentityModel.OidcConstants;
 
-namespace Service
+namespace ServiceWithAspNetIdentity
 {
     public class Config
     {
@@ -22,19 +23,20 @@ namespace Service
                     Username = "alice",
                     Password = "password",
                     Claims = new List<Claim>(){
-                        new Claim(JwtClaimTypes.Role,"superadmin")
+                        new Claim(JwtClaimTypes.Role,"superadmin"),
+                        new Claim(JwtClaimTypes.Email,"alice@alice.com")
                     }
                 },
                 new TestUser
                 {
                     SubjectId = "2",
-                    Username = "bob",
+                    Username = "bob@bob.com",
                     Password = "password",
                     Claims = new List<Claim>
                     {
                         new Claim("name", "Bob"),
                         new Claim("website", "https://bob.com"),
-                        new Claim(JwtClaimTypes.Role, "admin"),
+                        new Claim(JwtClaimTypes.Role, "admin"), 
                     },
                 }
             };
@@ -66,7 +68,7 @@ namespace Service
                 new Client
                 {
                     ClientId = "Client",
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = IdentityServer4.Models.GrantTypes.ClientCredentials,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
@@ -78,7 +80,7 @@ namespace Service
                 new Client
                 {
                     ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    AllowedGrantTypes = IdentityServer4.Models.GrantTypes.ResourceOwnerPassword,
 
                     ClientSecrets =
                     {
@@ -92,8 +94,8 @@ namespace Service
                 {
                     ClientId = "mvc",
                     ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-
+                    AllowedGrantTypes = IdentityServer4.Models.GrantTypes.HybridAndClientCredentials,
+                    RequireConsent = false,
                     ClientSecrets =
                     {
                         new Secret("secret".Sha256())
@@ -117,9 +119,8 @@ namespace Service
                 {
                     ClientId = "js",
                     ClientName = "JavaScript Client",
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequirePkce = true,
-                    RequireClientSecret = false,
+                    AllowedGrantTypes = IdentityServer4.Models.GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
 
                     RedirectUris = { "http://localhost:5003/callback.html" },
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html" },

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcClient", "MvcClient\MvcC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtectAPI", "ProtectAPI\ProtectAPI.csproj", "{FE66E0F1-94D1-4E94-8A07-FC511F4D276B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JavaScriptClient", "JavaScriptClient\JavaScriptClient.csproj", "{4E4FF730-326A-4A53-9FB9-216D0089960E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FE66E0F1-94D1-4E94-8A07-FC511F4D276B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE66E0F1-94D1-4E94-8A07-FC511F4D276B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE66E0F1-94D1-4E94-8A07-FC511F4D276B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E4FF730-326A-4A53-9FB9-216D0089960E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E4FF730-326A-4A53-9FB9-216D0089960E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E4FF730-326A-4A53-9FB9-216D0089960E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E4FF730-326A-4A53-9FB9-216D0089960E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
