@@ -53,6 +53,7 @@ namespace Service
                 .AddTestUsers(Config.GetUsers())
                 .AddConfigurationStore(options =>
                 {
+                    // this adds the config data from DB (clients, resources)
                     //dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb  --project Service
                     options.ConfigureDbContext = builder =>
                     {
@@ -65,6 +66,7 @@ namespace Service
                 })
                 .AddOperationalStore(options =>
                 {
+                    // this adds the operational data from DB (codes, tokens, consents)
                     //dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb  --project Service
                     options.ConfigureDbContext = builder =>
                     {
@@ -74,6 +76,8 @@ namespace Service
                             sql.EnableRetryOnFailure(maxRetryCount: 15, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
                         });
                     };
+                    // this enables automatic token cleanup. this is optional.
+                    options.EnableTokenCleanup = true;
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             //services.AddAuthentication("Bearer")
