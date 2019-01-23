@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
+using IdentityModel;
 using IdentityServer4.Models;
 using System.Collections.Generic;
 
@@ -23,7 +24,32 @@ namespace IdentityServerAspNetIdentity
         {
             return new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                new ApiResource("api1", "My API #1"),
+                new ApiResource
+                {
+                    Name = "api2",
+                    // secret for using introspection endpoint
+                    ApiSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    // include the following using claims in access token (in addition to subject id)
+                    UserClaims = { JwtClaimTypes.Name, JwtClaimTypes.Email },
+                    // this API defines two scopes
+                    Scopes =
+                    {
+                        new Scope()
+                        {
+                            Name = "api2.full_access",
+                            DisplayName = "Full access to API 2",
+                        },
+                        new Scope
+                        {
+                            Name = "api2.read_only",
+                            DisplayName = "Read only access to API 2"
+                        }
+                    }
+                }
             };
         }
 
@@ -88,7 +114,7 @@ namespace IdentityServerAspNetIdentity
                     PostLogoutRedirectUris = { "http://localhost:5003/index.html" },
                     AllowedCorsOrigins = { "http://localhost:5003" },
 
-                    AllowedScopes = { "openid", "profile", "api1" },
+                    AllowedScopes = { "openid", "profile", "api1" , "api2.read_only"},
                 },
                 // SPA client using implicit flow
                 new Client

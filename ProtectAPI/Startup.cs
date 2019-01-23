@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +26,22 @@ namespace ProtectAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
-               {
-                   options.Authority = "http://localhost:5000";
-                   options.RequireHttpsMetadata = false;
-                   options.ApiName = "api1";
-               });
+            //services.AddAuthentication("Bearer")
+            //    .AddIdentityServerAuthentication(options =>
+            //   {
+            //       options.Authority = "http://localhost:5000";
+            //       options.RequireHttpsMetadata = false;
+            //       options.ApiName = "api1";
+            //   });
+            services.AddAuthentication("jstest")
+                .AddIdentityServerAuthentication("jstest", options =>
+                {
+                    // base-address of your identityserver
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    // name of the API resource
+                    options.ApiName = "api1";
+                });
             services.AddCors(options =>
             {
                 // this defines a CORS policy called "default"

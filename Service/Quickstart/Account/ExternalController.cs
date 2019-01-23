@@ -71,6 +71,7 @@ namespace Host.Quickstart.Account
                     {
                         { "returnUrl", returnUrl },
                         { "scheme", provider },
+                        { "datetime", DateTime.Now.ToString() },
                     }
                 };
 

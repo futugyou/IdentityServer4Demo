@@ -51,6 +51,8 @@ namespace Service
             services.AddIdentityServer()
                 .AddDeveloperSigningCredential()
                 .AddTestUsers(Config.GetUsers())
+                .AddResourceOwnerValidator<CustomResourceOwnerPasswordValidator>()
+                .AddProfileService<CustomProfileService>()
                 .AddConfigurationStore(options =>
                 {
                     // this adds the config data from DB (clients, resources)
@@ -79,16 +81,29 @@ namespace Service
                     // this enables automatic token cleanup. this is optional.
                     options.EnableTokenCleanup = true;
                 });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddAuthentication("Bearer")
-            //    .AddIdentityServerAuthentication(options =>
-            //    {
-            //        options.Authority = "http://localhost:5000";
-            //        options.RequireHttpsMetadata = false;
-            //        options.ApiName = "api1";
-            //    });
+
+            services.AddOidcStateDataFormatterCache();
+
+            services.AddAuthentication(options =>
+            { 
+                options.DefaultChallengeScheme = "Bearer"; 
+            })
+            .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = "api1"; 
+                });
+            //        services.AddAuthentication("MyCookie")
+            //.AddCookie("MyCookie", options =>
+            //{
+
+            //});
+            
             services.AddAuthentication()
-                .AddGoogle("Google", options =>
+                .AddGoogle("Google", "Google!!!", options =>
                 {
                     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 

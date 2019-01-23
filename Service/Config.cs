@@ -22,7 +22,8 @@ namespace Service
                     Username = "alice",
                     Password = "password",
                     Claims = new List<Claim>(){
-                        new Claim(JwtClaimTypes.Role,"superadmin")
+                        new Claim(JwtClaimTypes.Role,"superadmin"),
+                        new Claim("thisisclaims","thisisclaims")
                     }
                 },
                 new TestUser
@@ -46,7 +47,7 @@ namespace Service
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource("roles","role",new List<string>{ "role"}),
+                new IdentityResource("roles","role",new List<string>{ "role" }),
             };
         }
 
@@ -54,7 +55,7 @@ namespace Service
         {
             return new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "My API",new List<string>(){JwtClaimTypes.Role ,"thisisclaims"})
             };
         }
 
